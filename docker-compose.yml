@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+
+    app:
+        container_name: "commander_api"
+        build: .
+        image: commander_api
+        ports:
+            - "8080:80"
+        environment: 
+            CONNECTION_STRING: "Server=db,1433;Initial Catalog=CommanderDb;User ID=SA;Password=MySuperStrongP455w0rd"
+        depends_on:
+            - db
+    db:
+        container_name: "mssql"
+        image: mcr.microsoft.com/mssql/server:latest-ubuntu
+        ports: 
+            - "1433:1433"
+        environment: 
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: "MySuperStrongP455w0rd"
+            MSSQL_PID: "Express"
+        volumes: 
+            - "data:/var/opt/mssql/data"
+
+volumes: 
+    data:
